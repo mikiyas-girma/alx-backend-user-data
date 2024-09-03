@@ -9,6 +9,7 @@ class Auth:
     """
     template for all authentication system in this app
     """
+
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """ checks paths that require auth """
         if excluded_paths is None or len(excluded_paths) == 0:
