@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """" Auth module to handle API authentication """
-from flask import Flask, request
 from typing import List, TypeVar
 import re
+from flask import request  # noqa
 
 
 class Auth:
@@ -13,7 +13,7 @@ class Auth:
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """ checks paths that require auth """
         if excluded_paths is None or len(excluded_paths) == 0 or \
-            path is None:
+           path is None:
             return True
         if path in excluded_paths:
             return False
