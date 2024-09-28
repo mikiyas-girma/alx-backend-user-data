@@ -5,6 +5,9 @@ module for filtering data
 import re
 from typing import List
 import logging
+from os import environ
+import mysql.connector
+
 
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
@@ -24,13 +27,31 @@ def get_logger() -> logging.Logger:
     """ returns logger object """
     logger = logging.getLogger("user_data")
     logger.setLevel(logging.INFO)
-    logger.propagate = false
+    logger.propagate = False
 
     handler = logging.StreamHandler()
     handler.setFormatter(RedactingFormatter(list(PII_FIELDS)))
     logger.addHandler(handler)
 
     return logger
+
+
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """ returns a connector to mysql database
+    """
+    host = environ.get("PERSONAL_DATA_DB_HOST", "localhost")
+    db = environ.get("PERSONAL_DATA_DB_NAME")
+    username = environ.get("PERSONAL_DATA_DB_USERNAME", "root")
+    password = environ.get("PERSONAL_DATA_DB_PASSWORD", "")
+
+    cx = mysql.connector.connection.MySQLConnection(
+        user=username,
+        password=password,
+        host=host,
+        database=db
+    )
+
+    return cx
 
 
 class RedactingFormatter(logging.Formatter):
