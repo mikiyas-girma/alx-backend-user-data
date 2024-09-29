@@ -28,7 +28,6 @@ class Auth:
         raise ValueError(f'User {email} already exists')
 
 
-
 def _hash_password(password: str) -> bytes:
     """returns the salted hash of the input password
     """
