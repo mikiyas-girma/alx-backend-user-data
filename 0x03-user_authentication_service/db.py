@@ -62,13 +62,12 @@ class DB:
         try:
             user = self.find_user_by(id=user_id)
         except NoResultFound:
-            raise NoResultFound
+            raise ValueError()
         else:
             for key, value in kwargs.items():
                 if hasattr(user, key):
                     setattr(user, key, value)
                 else:
-                    raise InvalidRequestError
+                    raise ValueError()
         finally:
             self._session.commit()
-
