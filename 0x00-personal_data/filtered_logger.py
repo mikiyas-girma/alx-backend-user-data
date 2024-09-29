@@ -67,7 +67,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     password = environ.get("PERSONAL_DATA_DB_PASSWORD", "")
 
     cx = mysql.connector.connect(user=username,
-                                 password=password, 
+                                 password=password,
                                  host=host,
                                  database=db)
     return cx
@@ -79,14 +79,13 @@ def main():
     display in filtered format
     """
     db = get_db()
+    logger = get_logger()
     cursor = db.cursor()
     cursor.execute("SELECT * FROM users;")
-    field_names = cursor.column_names
-
-    logger = get_logger()
+    fields = cursor.column_names
 
     for row in cursor:
-        message = "".join("{}={}; ".format(k, v) for k, v in zip(field_names, row))
+        message = "".join("{}={}; ".format(k, v) for k, v in zip(fields, row))
         logger.info(message.strip())
 
     cursor.close()
